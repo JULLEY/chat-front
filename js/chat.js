@@ -2,6 +2,7 @@ const eventSource = new EventSource("http://localhost:8080/sender/leo/receiver/b
 
 eventSource.onmessage = (e) =>{
     const data = JSON.parse(e.data);
+    initMsg(data);
 }
 
 // 메세지 박스
@@ -10,6 +11,19 @@ function getSendMsgBox(msg, time){
                 <p>${msg}</p>
                 <span class="time_date">${time}</span>
             </div>`;
+}
+
+// 메세지 출력
+function initMsg(data){
+    let chatBox = document.querySelector("#chat-box");
+    let msgInput = document.querySelector("#chat-outgoing-msg");
+
+    let chatOutgoingBox = document.createElement("div");
+    chatOutgoingBox.className = "outgoing_msg";
+
+    chatOutgoingBox.innerHTML = getSendMsgBox(data.msg, data.createdAt);
+    chatBox.append(chatOutgoingBox);
+    msgInput.value = "";
 }
 
 // 메세지 생성
@@ -37,9 +51,8 @@ async function makeMsg(){
         }
     });
 
-    console.log(response);
     let parseResponse = await response.json();
-    console.log(parseResponse);
+    // console.log(parseResponse);
 
     chatOutgoingBox.innerHTML = getSendMsgBox(msgInput.value, now);
     chatBox.append(chatOutgoingBox);
