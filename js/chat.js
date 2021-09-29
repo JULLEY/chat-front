@@ -21,7 +21,11 @@ function initMsg(data){
     let chatOutgoingBox = document.createElement("div");
     chatOutgoingBox.className = "outgoing_msg";
 
-    chatOutgoingBox.innerHTML = getSendMsgBox(data.msg, data.createdAt);
+    let md = data.createdAt.substring(5,10)
+    let tm = data.createdAt.substring(11,16)
+    convertTime = tm + " | " + md
+
+    chatOutgoingBox.innerHTML = getSendMsgBox(data.msg, convertTime);
     chatBox.append(chatOutgoingBox);
     msgInput.value = "";
 }
